@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.formation.model.Client;
 import org.formation.service.ClientService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

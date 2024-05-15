@@ -11,17 +11,24 @@ public class Client extends Person {
 	private CurrentAccount currentAccount;
 	@Embedded
 	private SavingAccount savingAccount;
-	
+
 	public Client() {
 		super();
 	}
-	
+
 	public Client(String firstName, String lastName, String email, String phoneNumber, Address address) {
 		super(firstName, lastName, email, phoneNumber, address);
 	}
 
 	public Client(CurrentAccount currentAccount, SavingAccount savingAccount) {
 		super();
+		this.currentAccount = currentAccount;
+		this.savingAccount = savingAccount;
+	}
+
+	public Client(String firstName, String lastName, String email, String phoneNumber, Address address,
+			CurrentAccount currentAccount, SavingAccount savingAccount) {
+		super(firstName, lastName, email, phoneNumber, address);
 		this.currentAccount = currentAccount;
 		this.savingAccount = savingAccount;
 	}

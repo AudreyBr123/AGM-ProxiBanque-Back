@@ -1,6 +1,7 @@
 package org.formation.model;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import jakarta.persistence.Embeddable;
 
@@ -14,6 +15,7 @@ public class Account {
 	}
 
 	public Account(double balance) {
+		this.id = UUID.randomUUID().getMostSignificantBits();
 		this.balance = balance;
 		this.creationDate = LocalDate.now();
 	}
