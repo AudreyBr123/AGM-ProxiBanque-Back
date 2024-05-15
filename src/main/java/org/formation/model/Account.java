@@ -1,21 +1,28 @@
 package org.formation.model;
 
 import java.time.LocalDate;
-import java.util.UUID;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
-import jakarta.persistence.Embeddable;
-
-@Embeddable
+@Entity
 public class Account {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	private double balance;
 	private LocalDate creationDate;
+
+	@OneToOne(mappedBy="account")
+	private Client client;
 	
 	public Account() {
 	}
 
 	public Account(double balance) {
-		this.id = UUID.randomUUID().getMostSignificantBits();
 		this.balance = balance;
 		this.creationDate = LocalDate.now();
 	}

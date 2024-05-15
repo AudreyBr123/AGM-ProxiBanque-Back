@@ -2,51 +2,55 @@ package org.formation.model;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
 
 @Entity
-@Table(name = "Client")
-public class Client extends Person {
+public class Client {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
 	@Embedded
-	private CurrentAccount currentAccount;
-	@Embedded
-	private SavingAccount savingAccount;
+	private PersonInfos personInfos;
+	
+	@OneToOne
+	@MapsId
+	private Account account;
 
 	public Client() {
 		super();
 	}
 
-	public Client(String firstName, String lastName, String email, String phoneNumber, Address address) {
-		super(firstName, lastName, email, phoneNumber, address);
+	public Client(PersonInfos personInfos, Account account) {
+		this.personInfos = personInfos;
+		this.account = account;
 	}
 
-	public Client(CurrentAccount currentAccount, SavingAccount savingAccount) {
-		super();
-		this.currentAccount = currentAccount;
-		this.savingAccount = savingAccount;
+	public Long getId() {
+		return id;
 	}
 
-	public Client(String firstName, String lastName, String email, String phoneNumber, Address address,
-			CurrentAccount currentAccount, SavingAccount savingAccount) {
-		super(firstName, lastName, email, phoneNumber, address);
-		this.currentAccount = currentAccount;
-		this.savingAccount = savingAccount;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public CurrentAccount getCurrentAccount() {
-		return currentAccount;
+	public PersonInfos getPersonInfos() {
+		return personInfos;
 	}
 
-	public void setCurrentAccount(CurrentAccount currentAccount) {
-		this.currentAccount = currentAccount;
+	public void setPersonInfos(PersonInfos personInfos) {
+		this.personInfos = personInfos;
 	}
 
-	public SavingAccount getSavingAccount() {
-		return savingAccount;
+	public Account getAccount() {
+		return account;
 	}
 
-	public void setSavingAccount(SavingAccount savingAccount) {
-		this.savingAccount = savingAccount;
+	public void setAccount(Account account) {
+		this.account = account;
 	}
-
 }

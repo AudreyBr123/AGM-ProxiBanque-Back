@@ -1,8 +1,5 @@
 package org.formation.model;
 
-import jakarta.persistence.Embeddable;
-
-@Embeddable
 public class SavingAccount extends Account {
 	public SavingAccount() {
 		super();
