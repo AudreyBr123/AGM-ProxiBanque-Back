@@ -2,6 +2,9 @@ package org.formation.model;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public class Account {
 	private Long id;
 	private double balance;

@@ -1,7 +1,15 @@
 package org.formation.model;
 
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "Client")
 public class Client extends Person {
+	@Embedded
 	private CurrentAccount currentAccount;
+	@Embedded
 	private SavingAccount savingAccount;
 	
 	public Client() {

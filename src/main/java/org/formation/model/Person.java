@@ -1,11 +1,24 @@
 package org.formation.model;
 
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Person {
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Long id;
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String phoneNumber;
+	@Embedded
 	private Address address;
 	
 	public Person() {
