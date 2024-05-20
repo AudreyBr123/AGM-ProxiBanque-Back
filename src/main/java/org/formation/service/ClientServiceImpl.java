@@ -30,7 +30,7 @@ public class ClientServiceImpl implements ClientService {
 //		}
 
 	@Override
-	public List<Client> getClients() {
+	public List<Client> getAll() {
 		return repository.findAll();
 	//	return clients;
 	}
@@ -38,6 +38,11 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public Client save(Client client) {
 		return repository.save(client);
+	}
+
+	@Override
+	public Client getById(Long id) {
+		return repository.findById(id).orElse(null);
 	}
 	
 	
