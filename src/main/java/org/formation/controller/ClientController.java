@@ -6,13 +6,14 @@ import org.formation.model.Client;
 import org.formation.service.ClientService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/clients")
 public class ClientController {
 	private ClientService service;
@@ -24,6 +25,11 @@ public class ClientController {
 	@GetMapping
 	public List<Client> getClients() {
 		return service.getClients();
+	}
+	
+	@GetMapping("{id}")
+	public Client getClient(@PathVariable Long id) {
+		return service.getClient(id);		
 	}
 	
 	@PostMapping
