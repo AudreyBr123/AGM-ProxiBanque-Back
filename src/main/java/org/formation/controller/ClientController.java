@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.formation.model.Client;
 import org.formation.service.ClientService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/clients")
 public class ClientController {
+	private static final Logger LOG = LoggerFactory.getLogger(ClientController.class);
 	private ClientService service;
 	
 	public ClientController(ClientService service) {
@@ -26,6 +29,7 @@ public class ClientController {
 	
 	@GetMapping
 	public List<Client> getClients() {
+		LOG.debug("======================> Accès à la liste des clients depuis le back-end");
 		return service.getAll();
 	}
 	
