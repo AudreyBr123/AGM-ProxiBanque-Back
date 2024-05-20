@@ -5,9 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 
-@Entity
+//@Entity
 public class Account {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +17,8 @@ public class Account {
 	private double balance;
 	private LocalDate creationDate;
 
-	@OneToOne(mappedBy="account")
+	@OneToOne
+	@MapsId
 	private Client client;
 	
 	public Account() {

@@ -1,11 +1,11 @@
 package org.formation.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 
 @Entity
@@ -16,18 +16,20 @@ public class Client {
 
 	@Embedded
 	private PersonInfos personInfos;
-	
-	@OneToOne
-	@MapsId
-	private Account account;
+
+	@OneToOne(mappedBy="client", cascade = CascadeType.ALL)
+	private CurrentAccount currentAccount;
+
+	@OneToOne(mappedBy="client", cascade = CascadeType.ALL)
+	private SavingAccount savingAccount;
 
 	public Client() {
-		super();
 	}
 
-	public Client(PersonInfos personInfos, Account account) {
+	public Client(PersonInfos personInfos, CurrentAccount currentAccount, SavingAccount savingAccount) {
 		this.personInfos = personInfos;
-		this.account = account;
+		this.currentAccount = currentAccount;
+		this.savingAccount = savingAccount;
 	}
 
 	public Long getId() {
@@ -46,11 +48,21 @@ public class Client {
 		this.personInfos = personInfos;
 	}
 
-	public Account getAccount() {
-		return account;
+	public CurrentAccount getCurrentAccount() {
+		return currentAccount;
 	}
 
-	public void setAccount(Account account) {
-		this.account = account;
+	public void setCurrentAccount(CurrentAccount currentAccount) {
+		this.currentAccount = currentAccount;
 	}
+
+	public SavingAccount getSavingAccount() {
+		return savingAccount;
+	}
+
+	public void setSavingAccount(SavingAccount savingAccount) {
+		this.savingAccount = savingAccount;
+	}
+
+
 }
