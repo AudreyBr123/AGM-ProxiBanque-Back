@@ -24,12 +24,12 @@ public class ClientController {
 	
 	@GetMapping
 	public List<Client> getClients() {
-		return service.getClients();
+		return service.getAll();
 	}
 	
 	@GetMapping("{id}")
 	public Client getClient(@PathVariable Long id) {
-		return service.getClient(id);		
+		return service.getById(id);		
 	}
 	
 	@PostMapping

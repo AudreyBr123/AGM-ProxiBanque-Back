@@ -30,7 +30,7 @@ public class ClientServiceImpl implements ClientService {
 //		}
 
 	@Override
-	public List<Client> getClients() {
+	public List<Client> getAll() {
 		return repository.findAll();
 	//	return clients;
 	}
@@ -40,8 +40,9 @@ public class ClientServiceImpl implements ClientService {
 		return repository.save(client);
 	}
 
+	//TO DO : remplacer le type client par une response entity ?
 	@Override
-	public Client getClient(Long id) {
+	public Client getById(Long id) {
 		return repository.findById(id).orElse(null);
 	}
 	
