@@ -30,7 +30,7 @@ public class ClientServiceImpl implements ClientService {
 //		}
 
 	@Override
-	public List<Client> getClients() {
+	public List<Client> getAll() {
 		return repository.findAll();
 	//	return clients;
 	}

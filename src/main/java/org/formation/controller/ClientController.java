@@ -25,7 +25,7 @@ public class ClientController {
 	
 	@GetMapping
 	public List<Client> getClients() {
-		return service.getClients();
+		return service.getAll();
 	}
 	
 	@PostMapping
@@ -34,7 +34,7 @@ public class ClientController {
 	}
 	
 	@DeleteMapping("{id}")
-	void deleteCoffee(@PathVariable Long id) {	
+	void deleteClient(@PathVariable Long id) {	
 		service.deleteById(id);
 	}
 }
