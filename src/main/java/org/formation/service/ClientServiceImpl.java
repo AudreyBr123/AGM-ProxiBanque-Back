@@ -40,7 +40,6 @@ public class ClientServiceImpl implements ClientService {
 		return repository.save(client);
 	}
 
-	//TO DO : remplacer le type client par une response entity ?
 	@Override
 	public Client getById(Long id) {
 		return repository.findById(id).orElse(null);
