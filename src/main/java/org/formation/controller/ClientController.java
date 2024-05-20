@@ -6,6 +6,7 @@ import org.formation.model.Client;
 import org.formation.service.ClientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,5 +42,9 @@ public class ClientController {
 	public Client postClient (@RequestBody Client client) {
 		return service.save(client);		
 	}
-
+	
+	@DeleteMapping("{id}")
+	void deleteClient(@PathVariable Long id) {	
+		service.deleteById(id);
+	}
 }
