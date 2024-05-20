@@ -8,4 +8,5 @@ public interface ClientService {
 	List<Client> getAll();
 	Client save(Client client);
 	void deleteById(Long id);
+	Client getById(Long id);
 }
