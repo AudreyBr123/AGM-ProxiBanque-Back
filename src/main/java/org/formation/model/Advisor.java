@@ -16,10 +16,27 @@ public class Advisor {
 	private PersonInfos personInfos;
 	
 	public Advisor() {
-		super();
 	}
 
 	public Advisor(PersonInfos personInfos) {
 		this.personInfos = personInfos;
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public PersonInfos getPersonInfos() {
+		return personInfos;
+	}
+
+	public void setPersonInfos(PersonInfos personInfos) {
+		this.personInfos = personInfos;
+	}
+	
+	
 }
