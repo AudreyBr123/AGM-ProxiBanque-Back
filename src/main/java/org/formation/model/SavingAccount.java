@@ -1,11 +1,8 @@
 package org.formation.model;
 
-public class SavingAccount extends Account {
-	public SavingAccount() {
-		super();
-	}
+import jakarta.persistence.Entity;
 
-	public SavingAccount(double balance) {
-		super(balance);
-	}
+//@Entity
+public class SavingAccount {
+
 }
