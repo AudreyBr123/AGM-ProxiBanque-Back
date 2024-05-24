@@ -67,4 +67,13 @@ public class SavingAccount {
 	public String toString() {
 		return "Account [id=" + id + ", balance=" + balance + ", creationDate=" + creationDate + "]";
 	}
+
+	// METHODES
+	public void creditAmount(double amount) {
+		setBalance(getBalance() + amount);
+	}
+
+	public void debitAmount(double amount) {
+		setBalance(getBalance() - amount);
+	}
 }
