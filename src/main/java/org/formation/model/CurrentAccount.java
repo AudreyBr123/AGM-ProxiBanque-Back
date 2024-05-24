@@ -2,6 +2,8 @@ package org.formation.model;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +20,7 @@ public class CurrentAccount {
 	private LocalDate creationDate;
 
 	@OneToOne(mappedBy = "currentAccount")
+	@JsonIgnore
 	private Client client;
 
 	public CurrentAccount() {
@@ -63,5 +66,15 @@ public class CurrentAccount {
 	@Override
 	public String toString() {
 		return "Account [id=" + id + ", balance=" + balance + ", creationDate=" + creationDate + "]";
+	}
+	
+	
+	//METHODES
+	public void creditAmount(double amount) {
+		setBalance(getBalance() + amount);
+	}
+	
+	public void debitAmount(double amount) {
+		setBalance(getBalance() - amount);
 	}
 }
