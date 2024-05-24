@@ -22,12 +22,17 @@ public class Client {
 	@JoinColumn(name = "currentAccount_id", unique = true)
 	private CurrentAccount currentAccount;
 
+	@OneToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "savingAccount_id", unique = true)
+	private SavingAccount savingAccount;
+
 	public Client() {
 	}
 
-	public Client(PersonInfos personInfos, CurrentAccount currentAccount) {
+	public Client(PersonInfos personInfos, CurrentAccount currentAccount, SavingAccount savingAccount) {
 		this.personInfos = personInfos;
 		this.currentAccount = currentAccount;
+		this.savingAccount = savingAccount;
 	}
 
 	public Long getId() {
@@ -54,5 +59,12 @@ public class Client {
 		this.currentAccount = currentAccount;
 	}
 
+	public SavingAccount getSavingAccount() {
+		return savingAccount;
+	}
+
+	public void setSavingAccount(SavingAccount savingAccount) {
+		this.savingAccount = savingAccount;
+	}
 
 }
