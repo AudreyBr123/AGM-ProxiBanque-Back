@@ -13,19 +13,23 @@ public class TransferServiceImpl implements TransferService {
 	CurrentAccountRepository currentAccountRepository;
 	SavingAccountRepository savingAccountRepository;
 
-	//Constructeur
 	public TransferServiceImpl(CurrentAccountRepository currentAccountRepository,
 			SavingAccountRepository savingAccountRepository) {
 		this.currentAccountRepository = currentAccountRepository;
 		this.savingAccountRepository = savingAccountRepository;
 	}
 
+	// TO DO : créer un DTO_response avec ce qu'on veut renvoyer en réponse à un
+	// transfert (type de compte, id, montant etc.)
+	// Transformer le type de retour des fonctions privées en response
+	// entity<DTO_response>, et celui d'executeTransfer aussi
+	// Transformer le type de retour dans le controleur
+
 	/**
 	 * Méthode publique pour executer un virement
-	 * @param transfer
 	 */
+	@Override
 	public void executeTransfer(Transfer transfer) {
-
 		if (transfer.getTypeCreditAccount().equals("currentAccount")
 				&& transfer.getTypeDebitAccount().equals("savingAccount")) {
 			initiateTransferFromSavingToCurrent(transfer);
@@ -41,8 +45,8 @@ public class TransferServiceImpl implements TransferService {
 	}
 
 	/**
-	 * Méthode privée pour executer un virement d'un compte épargne vers un compte courant
-	 * @param transfer
+	 * Méthode privée pour executer un virement d'un compte épargne vers un compte
+	 * courant
 	 */
 	private void initiateTransferFromSavingToCurrent(Transfer transfer) {
 		// trouve le compte de crédit (courant)
@@ -55,17 +59,17 @@ public class TransferServiceImpl implements TransferService {
 		if (debitAccount != null && creditAccount != null) {
 			debitAccount.debitAmount(transfer.getAmount());
 			creditAccount.creditAmount(transfer.getAmount());
+
+			// persister les deux
+			currentAccountRepository.save(creditAccount);
+			savingAccountRepository.save(debitAccount);
 		}
 
-		// persister les deux
-		currentAccountRepository.save(creditAccount);
-		savingAccountRepository.save(debitAccount);
 	}
-	
-	
+
 	/**
-	 * Méthode privée pour executer un virement d'un compte courant vers un compte courant
-	 * @param transfer
+	 * Méthode privée pour executer un virement d'un compte courant vers un compte
+	 * courant
 	 */
 	private void initiateTransferFromCurrentToCurrent(Transfer transfer) {
 		// trouve le compte de crédit (courant)
@@ -84,10 +88,10 @@ public class TransferServiceImpl implements TransferService {
 		currentAccountRepository.save(creditAccount);
 		currentAccountRepository.save(debitAccount);
 	}
-	
+
 	/**
-	 * Méthode privée pour executer un virement d'un compte courant vers un compte épargne
-	 * @param transfer
+	 * Méthode privée pour executer un virement d'un compte courant vers un compte
+	 * épargne
 	 */
 	private void initiateTransferFromCurrentToSaving(Transfer transfer) {
 		// trouve le compte de crédit (courant)
@@ -106,7 +110,8 @@ public class TransferServiceImpl implements TransferService {
 		savingAccountRepository.save(creditAccount);
 		currentAccountRepository.save(debitAccount);
 	}
-	
-	//Impossible de faire un virement d'un compte épargne vers un autre compte épargne
+
+	// Impossible de faire un virement d'un compte épargne vers un autre compte
+	// épargne
 
 }
