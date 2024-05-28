@@ -9,11 +9,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoginService {
 	
+	//Pour la V1 du login, on predefinit un couple login/password dedie au manager
+	//On poste une proposition de login/password, on verifie s'il vaut bien ce qui est prevu
+	//Si oui, on renvoie le role MANAGER, sinon le role GUEST
+	
     public Map<String, String> login(User user) {
         Map<String, String> response = new HashMap<>();
         
-        if (user.getLogin().equals("manager@proxibanque.fr") && user.getPassword().equals("manager")) {
+        if (user.getLogin().equals("manager@proxibanque.fr") && user.getPassword().equals("manager@proxibanque.fr")) {
         	response.put("role", "MANAGER");
+        	return response;
+        }
+        
+        if (user.getLogin().equals("advisor@proxibanque.fr") && user.getPassword().equals("advisor@proxibanque.fr")) {
+        	response.put("role", "ADVISOR");
         	return response;
         }
         
