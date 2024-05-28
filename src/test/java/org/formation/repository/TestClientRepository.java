@@ -17,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class TestClientRepository {
 
-	private static Logger logger = LoggerFactory.getLogger(TestClientRepository.class);
+	private static Logger LOG = LoggerFactory.getLogger(TestClientRepository.class);
 
 	@Autowired
 	private ClientRepository clientRepository;
@@ -39,18 +39,18 @@ public class TestClientRepository {
 
 	@Test
 	public void findByCurrentAccountShouldReturnClient() {
-		logger.debug("Le client a : " + clientA.getPersonInfos().getFirstName());
+		LOG.debug("Le client a : " + clientA.getPersonInfos().getFirstName());
 		Client clientFound = clientRepository.findByCurrentAccount(currentAccountA);
-		logger.debug("Le client trouve : " + clientFound.getPersonInfos().getFirstName());
+		LOG.debug("Le client trouve : " + clientFound.getPersonInfos().getFirstName());
 
 		assertEquals(clientA.getPersonInfos().getFirstName(), clientFound.getPersonInfos().getFirstName());
 	}
 	
 	@Test
 	public void findBySavingAccountShouldReturnClient() {
-		logger.debug("Le client a : " + clientA.getPersonInfos().getFirstName());
+		LOG.debug("Le client a : " + clientA.getPersonInfos().getFirstName());
 		Client clientFound = clientRepository.findBySavingAccount(savingAccountA);
-		logger.debug("Le client trouve : " + clientFound.getPersonInfos().getFirstName());
+		LOG.debug("Le client trouve : " + clientFound.getPersonInfos().getFirstName());
 
 		assertEquals(clientA.getPersonInfos().getFirstName(), clientFound.getPersonInfos().getFirstName());
 	}

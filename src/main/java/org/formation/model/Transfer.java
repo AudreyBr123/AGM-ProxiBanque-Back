@@ -10,10 +10,6 @@ public class Transfer {
 	Long idCreditAccount;
 	Long idDebitAccount;
 
-	// id des clients
-//	Long idCreditClient;
-//	Long idDebitClient;
-
 	// ajouter validator not negative
 	double amount;
 
