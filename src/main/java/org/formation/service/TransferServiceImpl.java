@@ -7,7 +7,10 @@ import org.formation.repository.CurrentAccountRepository;
 import org.formation.repository.SavingAccountRepository;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class TransferServiceImpl implements TransferService {
 
 	CurrentAccountRepository currentAccountRepository;
