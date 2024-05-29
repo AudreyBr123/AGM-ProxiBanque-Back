@@ -1,7 +1,9 @@
-package org.formation.model;
+package org.formation.dto;
 
-// DTO 
-public class Transfer {
+import jakarta.validation.constraints.Positive;
+
+public class TransferDtoRequest {
+
 	// types de comptes (peuvent être courant ou épargne : validateur possible?)
 	String typeCreditAccount;
 	String typeDebitAccount;
@@ -10,13 +12,13 @@ public class Transfer {
 	Long idCreditAccount;
 	Long idDebitAccount;
 
-	// ajouter validator not negative
+	@Positive
 	double amount;
 
-	public Transfer() {
+	public TransferDtoRequest() {
 	}
 
-	public Transfer(String typeDebitAccount, String typeCreditAccount, Long idDebitAccount, Long idCreditAccount,
+	public TransferDtoRequest(String typeDebitAccount, String typeCreditAccount, Long idDebitAccount, Long idCreditAccount,
 			double amount) {
 		this.typeDebitAccount = typeDebitAccount;
 		this.typeCreditAccount = typeCreditAccount;

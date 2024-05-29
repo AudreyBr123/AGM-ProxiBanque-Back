@@ -1,10 +1,10 @@
 package org.formation.service;
 
-import org.formation.model.Transfer;
+import org.formation.dto.TransferDtoRequest;
 
 public interface TransferService {
 
-	public void executeTransfer(Transfer transfer);
+	public void executeTransfer(TransferDtoRequest transfer);
 	
 }
 

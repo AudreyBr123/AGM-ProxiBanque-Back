@@ -1,9 +1,9 @@
 package org.formation.service;
 
+import org.formation.dto.TransferDtoRequest;
 import org.formation.model.Client;
 import org.formation.model.CurrentAccount;
 import org.formation.model.SavingAccount;
-import org.formation.model.Transfer;
 import org.formation.repository.ClientRepository;
 import org.formation.repository.CurrentAccountRepository;
 import org.formation.repository.SavingAccountRepository;
@@ -39,7 +39,7 @@ public class TransferServiceImpl implements TransferService {
 	 * Méthode publique pour executer un virement
 	 */
 	@Override
-	public void executeTransfer(Transfer transfer) {
+	public void executeTransfer(TransferDtoRequest transfer) {
 		if (transfer.getTypeCreditAccount().equals("currentAccount")
 				&& transfer.getTypeDebitAccount().equals("savingAccount")) {
 			initiateTransferFromSavingToCurrent(transfer);
@@ -58,7 +58,7 @@ public class TransferServiceImpl implements TransferService {
 	 * Méthode privée pour executer un virement d'un compte épargne vers un compte
 	 * courant. Elle n'est exécutable qu'entre les comptes d'un client
 	 */
-	private void initiateTransferFromSavingToCurrent(Transfer transfer) {
+	private void initiateTransferFromSavingToCurrent(TransferDtoRequest transfer) {
 		// trouve le compte de crédit (courant)
 		CurrentAccount creditAccount = currentAccountRepository.findById(transfer.getIdCreditAccount()).orElse(null);
 
@@ -100,7 +100,7 @@ public class TransferServiceImpl implements TransferService {
 	 * un virement du compte courant d'un client au compte courant d'un autre
 	 * client)
 	 */
-	private void initiateTransferFromCurrentToCurrent(Transfer transfer) {
+	private void initiateTransferFromCurrentToCurrent(TransferDtoRequest transfer) {
 		// trouve le compte de crédit (courant)
 		CurrentAccount creditAccount = currentAccountRepository.findById(transfer.getIdCreditAccount()).orElse(null);
 
@@ -131,7 +131,7 @@ public class TransferServiceImpl implements TransferService {
 	 * Méthode privée pour executer un virement d'un compte courant vers un compte
 	 * épargne. Elle n'est exécutable qu'entre les comptes d'un client
 	 */
-	private void initiateTransferFromCurrentToSaving(Transfer transfer) {
+	private void initiateTransferFromCurrentToSaving(TransferDtoRequest transfer) {
 		// trouve le compte de crédit (courant)
 		SavingAccount creditAccount = savingAccountRepository.findById(transfer.getIdCreditAccount()).orElse(null);
 

@@ -34,11 +34,9 @@ public class ClientController {
 	
 	@GetMapping("{id}")
 	public ResponseEntity<Client> getClient(@PathVariable Long id) {
-		Client client = service.getById(id);				
-		if (client == null) {
-			return ResponseEntity.notFound().build();
-		}
-		return ResponseEntity.ok().body(client);		 
+		LOG.debug("Accès au client d'id " + id);
+		return service.getById(id).map(c -> ResponseEntity.ok().body(c))
+		.orElse(ResponseEntity.notFound().build());
 	}
 	
 	@PostMapping
