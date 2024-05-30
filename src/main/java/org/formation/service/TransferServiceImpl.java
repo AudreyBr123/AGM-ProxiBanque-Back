@@ -31,18 +31,13 @@ public class TransferServiceImpl implements TransferService {
 	@Autowired
 	ClientRepository clientRepository;
 
-	// TO DO : créer un DTO_response avec ce qu'on veut renvoyer en réponse à un
-	// transfert (type de compte, id, montant etc.)
-	// Transformer le type de retour des fonctions privées en response
-	// entity<DTO_response>, et celui d'executeTransfer aussi
-	// Transformer le type de retour dans le controleur
-	
 
 	/**
 	 * Méthode publique pour executer un virement
 	 */
 	@Override
-	public ResponseEntity<TransferDtoResponse> executeTransfer(TransferDtoRequest transfer) throws NullPointerException,TransferException {
+	public ResponseEntity<TransferDtoResponse> executeTransfer(TransferDtoRequest transfer)
+			throws NullPointerException, TransferException {
 		if (transfer.getTypeCreditAccount().equals("currentAccount")
 				&& transfer.getTypeDebitAccount().equals("savingAccount")) {
 			return initiateTransferFromSavingToCurrent(transfer);
@@ -55,51 +50,52 @@ public class TransferServiceImpl implements TransferService {
 				&& transfer.getTypeDebitAccount().equals("currentAccount")) {
 			return initiateTransferFromCurrentToSaving(transfer);
 		}
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.badRequest().build();
 	}
 
 	/**
 	 * Méthode privée pour executer un virement d'un compte épargne vers un compte
 	 * courant. Elle n'est exécutable qu'entre les comptes d'un client
 	 */
-	private ResponseEntity<TransferDtoResponse> initiateTransferFromSavingToCurrent(TransferDtoRequest transfer) throws NullPointerException,TransferException {
+	private ResponseEntity<TransferDtoResponse> initiateTransferFromSavingToCurrent(TransferDtoRequest transfer)
+			throws NullPointerException, TransferException {
+		
 		// Trouve le compte de crédit (courant)
-		CurrentAccount creditAccount = currentAccountRepository
-				.findById(transfer.getIdCreditAccount())
+		CurrentAccount creditAccount = currentAccountRepository.findById(transfer.getIdCreditAccount())
 				.orElseThrow(() -> new NullPointerException());
 
 		// Trouve le compte de débit (épargne)
-		SavingAccount debitAccount = savingAccountRepository
-				.findById(transfer.getIdDebitAccount())
+		SavingAccount debitAccount = savingAccountRepository.findById(transfer.getIdDebitAccount())
 				.orElseThrow(() -> new NullPointerException());
 
 		// Trouve les clients associés aux comptes
 		Client clientCreditAccount = clientRepository.findByCurrentAccount(creditAccount);
 		Client clientDebitAccount = clientRepository.findBySavingAccount(debitAccount);
 
-		// Si le virement est entre les comptes de clients différents, lancer une exception
+		// Si le virement est entre les comptes de clients différents, lancer une
+		// exception
 		if (clientCreditAccount != clientDebitAccount) {
-			throw new TransferException("Erreur, il n'est pas possible de faire un virement d'un compte épargne au compte courant d'un autre client");
+			throw new TransferException(
+					"Erreur, il n'est pas possible de faire un virement d'un compte épargne au compte courant d'un autre client");
 		}
-		
-		// Si on arrive ici, aucune exception n'a été soulevée : on fait le virement 
-			LOG.debug("Solde du compte à créditer : " + creditAccount.getBalance() + " appartenant au client d'id "
-					+ clientCreditAccount.getId() + "\n Solde du compte à débiter : " + debitAccount.getBalance()
-					+ " appartenant au client d'id " + clientDebitAccount.getId() + "\n Montant : "
-					+ transfer.getAmount());
-			debitAccount.debitAmount(transfer.getAmount());
-			creditAccount.creditAmount(transfer.getAmount());
 
-			// Persister les deux
-			currentAccountRepository.save(creditAccount);
-			savingAccountRepository.save(debitAccount);
-			LOG.debug("Nouveaux montants persistés");
+		// Si on arrive ici, aucune exception n'a été soulevée : on fait le virement
+		LOG.debug("Solde du compte à créditer : " + creditAccount.getBalance() + " appartenant au client d'id "
+				+ clientCreditAccount.getId() + "\n Solde du compte à débiter : " + debitAccount.getBalance()
+				+ " appartenant au client d'id " + clientDebitAccount.getId() + "\n Montant : " + transfer.getAmount());
+		debitAccount.debitAmount(transfer.getAmount());
+		creditAccount.creditAmount(transfer.getAmount());
 
-			LOG.debug("Virement effectué, nouveau solde du compte crédité : " + creditAccount.getBalance()
-					+ "\n Nouveau solde du compte débité : " + debitAccount.getBalance());
+		// Persister les deux
+		currentAccountRepository.save(creditAccount);
+		savingAccountRepository.save(debitAccount);
+		LOG.debug("Nouveaux montants persistés");
 
-			TransferDtoResponse transferDtoResponse = new TransferDtoResponse(transfer.getAmount());
-			return ResponseEntity.ok().body(transferDtoResponse);
+		LOG.debug("Virement effectué, nouveau solde du compte crédité : " + creditAccount.getBalance()
+				+ "\n Nouveau solde du compte débité : " + debitAccount.getBalance());
+
+		TransferDtoResponse transferDtoResponse = new TransferDtoResponse(transfer.getAmount());
+		return ResponseEntity.ok().body(transferDtoResponse);
 	}
 
 	/**
@@ -108,46 +104,48 @@ public class TransferServiceImpl implements TransferService {
 	 * un virement du compte courant d'un client au compte courant d'un autre
 	 * client)
 	 */
-	private ResponseEntity<TransferDtoResponse> initiateTransferFromCurrentToCurrent(TransferDtoRequest transfer) {
+	private ResponseEntity<TransferDtoResponse> initiateTransferFromCurrentToCurrent(TransferDtoRequest transfer)
+			throws NullPointerException {
 		// trouve le compte de crédit (courant)
-		CurrentAccount creditAccount = currentAccountRepository.findById(transfer.getIdCreditAccount()).orElse(null);
+		CurrentAccount creditAccount = currentAccountRepository.findById(transfer.getIdCreditAccount())
+				.orElseThrow(() -> new NullPointerException());
 
 		// trouve le compte de débit (courant)
-		CurrentAccount debitAccount = currentAccountRepository.findById(transfer.getIdDebitAccount()).orElse(null);
+		CurrentAccount debitAccount = currentAccountRepository.findById(transfer.getIdDebitAccount())
+				.orElseThrow(() -> new NullPointerException());
 
-		// si les deux ne sont pas null, executer le virement
-		if (debitAccount != null && creditAccount != null) {
-			LOG.debug("Solde du compte à créditer : " + creditAccount.getBalance() + "\n Solde du compte à débiter : "
-					+ debitAccount.getBalance() + "\n Montant : " + transfer.getAmount());
+		// Executer le virement
+		LOG.debug("Solde du compte à créditer : " + creditAccount.getBalance() + "\n Solde du compte à débiter : "
+				+ debitAccount.getBalance() + "\n Montant : " + transfer.getAmount());
 
-			debitAccount.debitAmount(transfer.getAmount());
-			creditAccount.creditAmount(transfer.getAmount());
-			LOG.debug("Virement effectué");
+		debitAccount.debitAmount(transfer.getAmount());
+		creditAccount.creditAmount(transfer.getAmount());
+		LOG.debug("Virement effectué");
 
-			// persister les deux
-			currentAccountRepository.save(creditAccount);
-			currentAccountRepository.save(debitAccount);
-			LOG.debug("Nouveaux montants persistés");
+		// persister les deux
+		currentAccountRepository.save(creditAccount);
+		currentAccountRepository.save(debitAccount);
+		LOG.debug("Nouveaux montants persistés");
 
-			LOG.debug("Virement effectué, nouveau solde du compte crédité : " + creditAccount.getBalance()
-					+ "\n Nouveau solde du compte débité : " + debitAccount.getBalance());
-		
-			TransferDtoResponse transferDtoResponse = new TransferDtoResponse(transfer.getAmount());
-			return ResponseEntity.ok().body(transferDtoResponse);		
-		}
-		return ResponseEntity.notFound().build();
+		LOG.debug("Virement effectué, nouveau solde du compte crédité : " + creditAccount.getBalance()
+				+ "\n Nouveau solde du compte débité : " + debitAccount.getBalance());
+
+		TransferDtoResponse transferDtoResponse = new TransferDtoResponse(transfer.getAmount());
+		return ResponseEntity.ok().body(transferDtoResponse);
+
 	}
 
 	/**
 	 * Méthode privée pour executer un virement d'un compte courant vers un compte
 	 * épargne. Elle n'est exécutable qu'entre les comptes d'un client
 	 */
-	private ResponseEntity<TransferDtoResponse> initiateTransferFromCurrentToSaving(TransferDtoRequest transfer) {
+	private ResponseEntity<TransferDtoResponse> initiateTransferFromCurrentToSaving(TransferDtoRequest transfer)
+			throws NullPointerException, TransferException {
 		// trouve le compte de crédit (courant)
-		SavingAccount creditAccount = savingAccountRepository.findById(transfer.getIdCreditAccount()).orElse(null);
+		SavingAccount creditAccount = savingAccountRepository.findById(transfer.getIdCreditAccount()).orElseThrow(() -> new NullPointerException());
 
 		// trouve le compte de débit (épargne)
-		CurrentAccount debitAccount = currentAccountRepository.findById(transfer.getIdDebitAccount()).orElse(null);
+		CurrentAccount debitAccount = currentAccountRepository.findById(transfer.getIdDebitAccount()).orElseThrow(() -> new NullPointerException());
 
 		// trouve les clients associés aux comptes
 		Client clientCreditAccount = clientRepository.findBySavingAccount(creditAccount);
@@ -155,13 +153,16 @@ public class TransferServiceImpl implements TransferService {
 
 		// si les deux ne sont pas null et que le virement est entre les comptes d'un
 		// même client, executer le virement
-		if (debitAccount != null && creditAccount != null && (clientCreditAccount == clientDebitAccount)) {
+		if (clientCreditAccount != clientDebitAccount) {
+			throw new TransferException(
+					"Erreur, il n'est pas possible de faire un virement d'un compte courant au compte épargne d'un autre client");
+		}
 
 			LOG.debug("Solde du compte à créditer : " + creditAccount.getBalance() + " appartenant au client d'id "
 					+ clientCreditAccount.getId() + "\n Solde du compte à débiter : " + debitAccount.getBalance()
 					+ " appartenant au client d'id " + clientDebitAccount.getId() + "\n Montant : "
 					+ transfer.getAmount());
-			
+
 			debitAccount.debitAmount(transfer.getAmount());
 			creditAccount.creditAmount(transfer.getAmount());
 			LOG.debug("Virement effectué");
@@ -169,17 +170,13 @@ public class TransferServiceImpl implements TransferService {
 			// persister les deux
 			savingAccountRepository.save(creditAccount);
 			currentAccountRepository.save(debitAccount);
+			
 			LOG.debug("Nouveaux montants persistés");
 			LOG.debug("Virement effectué, nouveau solde du compte crédité : " + creditAccount.getBalance()
-			+ "\n Nouveau solde du compte débité : " + debitAccount.getBalance());
+					+ "\n Nouveau solde du compte débité : " + debitAccount.getBalance());
 
 			TransferDtoResponse transferDtoResponse = new TransferDtoResponse(transfer.getAmount());
-			return ResponseEntity.ok().body(transferDtoResponse);	
-		} else {			
-			LOG.error(
-					"Erreur, il n'est pas possible de faire un virement d'un compte courant au compte épargne d'un autre client, ou un des comptes n'existe pas");
-			return ResponseEntity.notFound().build();
-		}
+			return ResponseEntity.ok().body(transferDtoResponse);		
 
 	}
 
