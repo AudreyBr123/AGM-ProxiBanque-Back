@@ -1,4 +1,4 @@
-package org.formation.service;
+package org.formation.exception;
 
 public class TransferException extends Exception {
 
