@@ -14,8 +14,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolationException;
 
 @Service
 @Transactional
@@ -38,7 +40,7 @@ public class TransferServiceImpl implements TransferService {
 	 */
 	@Override
 	public ResponseEntity<TransferDtoResponse> executeTransfer(TransferDtoRequest transfer)
-			throws NullPointerException, TransferException {
+			throws NullPointerException, TransferException, MethodArgumentNotValidException, ConstraintViolationException {
 		if (transfer.getTypeCreditAccount().equals("currentAccount")
 				&& transfer.getTypeDebitAccount().equals("savingAccount")) {
 			return initiateTransferFromSavingToCurrent(transfer);
@@ -59,7 +61,7 @@ public class TransferServiceImpl implements TransferService {
 	 * courant. Elle n'est exécutable qu'entre les comptes d'un client
 	 */
 	private ResponseEntity<TransferDtoResponse> initiateTransferFromSavingToCurrent(TransferDtoRequest transfer)
-			throws NullPointerException, TransferException {
+			throws NullPointerException, TransferException, MethodArgumentNotValidException, ConstraintViolationException {
 		
 		// Trouve le compte de crédit (courant)
 		CurrentAccount creditAccount = currentAccountRepository.findById(transfer.getIdCreditAccount())
@@ -106,7 +108,7 @@ public class TransferServiceImpl implements TransferService {
 	 * client)
 	 */
 	private ResponseEntity<TransferDtoResponse> initiateTransferFromCurrentToCurrent(TransferDtoRequest transfer)
-			throws NullPointerException {
+			throws NullPointerException, MethodArgumentNotValidException, ConstraintViolationException {
 		// trouve le compte de crédit (courant)
 		CurrentAccount creditAccount = currentAccountRepository.findById(transfer.getIdCreditAccount())
 				.orElseThrow(() -> new NullPointerException());
@@ -141,7 +143,7 @@ public class TransferServiceImpl implements TransferService {
 	 * épargne. Elle n'est exécutable qu'entre les comptes d'un client
 	 */
 	private ResponseEntity<TransferDtoResponse> initiateTransferFromCurrentToSaving(TransferDtoRequest transfer)
-			throws NullPointerException, TransferException {
+			throws NullPointerException, TransferException, MethodArgumentNotValidException, ConstraintViolationException {
 		// trouve le compte de crédit (courant)
 		SavingAccount creditAccount = savingAccountRepository.findById(transfer.getIdCreditAccount()).orElseThrow(() -> new NullPointerException());
 

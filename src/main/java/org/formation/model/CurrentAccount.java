@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 public class CurrentAccount {
@@ -16,6 +17,7 @@ public class CurrentAccount {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Positive
 	private double balance;
 	private LocalDate creationDate;
 
