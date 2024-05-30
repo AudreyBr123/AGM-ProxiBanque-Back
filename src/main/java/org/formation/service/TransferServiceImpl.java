@@ -1,6 +1,7 @@
 package org.formation.service;
 
 import org.formation.dto.TransferDtoRequest;
+import org.formation.dto.TransferDtoResponse;
 import org.formation.model.Client;
 import org.formation.model.CurrentAccount;
 import org.formation.model.SavingAccount;
@@ -10,6 +11,7 @@ import org.formation.repository.SavingAccountRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -37,28 +39,30 @@ public class TransferServiceImpl implements TransferService {
 
 	/**
 	 * Méthode publique pour executer un virement
+	 * @return 
 	 */
 	@Override
-	public void executeTransfer(TransferDtoRequest transfer) {
+	public ResponseEntity<TransferDtoResponse> executeTransfer(TransferDtoRequest transfer) {
 		if (transfer.getTypeCreditAccount().equals("currentAccount")
 				&& transfer.getTypeDebitAccount().equals("savingAccount")) {
-			initiateTransferFromSavingToCurrent(transfer);
+			return initiateTransferFromSavingToCurrent(transfer);
 		}
 		if (transfer.getTypeCreditAccount().equals("currentAccount")
 				&& transfer.getTypeDebitAccount().equals("currentAccount")) {
-			initiateTransferFromCurrentToCurrent(transfer);
+			return initiateTransferFromCurrentToCurrent(transfer);
 		}
 		if (transfer.getTypeCreditAccount().equals("savingAccount")
 				&& transfer.getTypeDebitAccount().equals("currentAccount")) {
-			initiateTransferFromCurrentToSaving(transfer);
+			return initiateTransferFromCurrentToSaving(transfer);
 		}
+		return ResponseEntity.notFound().build();
 	}
 
 	/**
 	 * Méthode privée pour executer un virement d'un compte épargne vers un compte
 	 * courant. Elle n'est exécutable qu'entre les comptes d'un client
 	 */
-	private void initiateTransferFromSavingToCurrent(TransferDtoRequest transfer) {
+	private ResponseEntity<TransferDtoResponse> initiateTransferFromSavingToCurrent(TransferDtoRequest transfer) {
 		// trouve le compte de crédit (courant)
 		CurrentAccount creditAccount = currentAccountRepository.findById(transfer.getIdCreditAccount()).orElse(null);
 
@@ -87,9 +91,13 @@ public class TransferServiceImpl implements TransferService {
 
 			LOG.debug("Virement effectué, nouveau solde du compte crédité : " + creditAccount.getBalance()
 					+ "\n Nouveau solde du compte débité : " + debitAccount.getBalance());
+
+			TransferDtoResponse transferDtoResponse = new TransferDtoResponse(transfer.getAmount());
+			return ResponseEntity.ok().body(transferDtoResponse);
 		} else {
 			LOG.error(
 					"Erreur, il n'est pas possible de faire un virement d'un compte épargne au compte courant d'un autre client, ou un des comptes n'existe pas");
+			return ResponseEntity.notFound().build();
 		}
 
 	}
@@ -100,7 +108,7 @@ public class TransferServiceImpl implements TransferService {
 	 * un virement du compte courant d'un client au compte courant d'un autre
 	 * client)
 	 */
-	private void initiateTransferFromCurrentToCurrent(TransferDtoRequest transfer) {
+	private ResponseEntity<TransferDtoResponse> initiateTransferFromCurrentToCurrent(TransferDtoRequest transfer) {
 		// trouve le compte de crédit (courant)
 		CurrentAccount creditAccount = currentAccountRepository.findById(transfer.getIdCreditAccount()).orElse(null);
 
@@ -123,15 +131,18 @@ public class TransferServiceImpl implements TransferService {
 
 			LOG.debug("Virement effectué, nouveau solde du compte crédité : " + creditAccount.getBalance()
 					+ "\n Nouveau solde du compte débité : " + debitAccount.getBalance());
+		
+			TransferDtoResponse transferDtoResponse = new TransferDtoResponse(transfer.getAmount());
+			return ResponseEntity.ok().body(transferDtoResponse);		
 		}
-
+		return ResponseEntity.notFound().build();
 	}
 
 	/**
 	 * Méthode privée pour executer un virement d'un compte courant vers un compte
 	 * épargne. Elle n'est exécutable qu'entre les comptes d'un client
 	 */
-	private void initiateTransferFromCurrentToSaving(TransferDtoRequest transfer) {
+	private ResponseEntity<TransferDtoResponse> initiateTransferFromCurrentToSaving(TransferDtoRequest transfer) {
 		// trouve le compte de crédit (courant)
 		SavingAccount creditAccount = savingAccountRepository.findById(transfer.getIdCreditAccount()).orElse(null);
 
@@ -162,9 +173,12 @@ public class TransferServiceImpl implements TransferService {
 			LOG.debug("Virement effectué, nouveau solde du compte crédité : " + creditAccount.getBalance()
 			+ "\n Nouveau solde du compte débité : " + debitAccount.getBalance());
 
-		} else {
+			TransferDtoResponse transferDtoResponse = new TransferDtoResponse(transfer.getAmount());
+			return ResponseEntity.ok().body(transferDtoResponse);	
+		} else {			
 			LOG.error(
 					"Erreur, il n'est pas possible de faire un virement d'un compte courant au compte épargne d'un autre client, ou un des comptes n'existe pas");
+			return ResponseEntity.notFound().build();
 		}
 
 	}

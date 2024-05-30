@@ -1,7 +1,9 @@
 package org.formation.controller;
 
 import org.formation.dto.TransferDtoRequest;
+import org.formation.dto.TransferDtoResponse;
 import org.formation.service.TransferServiceImpl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +22,8 @@ public class TransferController {
 	}
 	
 	@PutMapping
-	public void transfer(@RequestBody @Valid TransferDtoRequest transfer) {
-		transferService.executeTransfer(transfer);
+	public ResponseEntity<TransferDtoResponse> transfer(@RequestBody @Valid TransferDtoRequest transfer) {
+		return transferService.executeTransfer(transfer);
 	}
 
 }
