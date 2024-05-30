@@ -10,4 +10,5 @@ public interface ClientService {
 	void deleteById(Long id);
 	Client getById(Long id);
 	Client update(Client client);
+	Client assignAdvisorToClient(Long clientId, Long advisorId);
 }

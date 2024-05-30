@@ -1,8 +1,10 @@
 package org.formation.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.formation.model.Advisor;
+import org.formation.model.Client;
 import org.formation.service.AdvisorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,10 +42,23 @@ public class AdvisorController {
 		.orElse(ResponseEntity.notFound().build());
 	}
 	
+	@GetMapping("{id}/number")
+	public int getNumberOfClients(@PathVariable Long id) {
+		LOG.debug("Nombre de clients du conseiller d'id " +id);
+		Advisor advisor = service.getById(id).orElse(null);
+		return advisor.getNumberOfClients();
+	}
+	
 	@PostMapping
 	public Advisor postAdvisor(@RequestBody Advisor advisor) {
 		LOG.debug("Création du conseiller " + advisor.getPersonInfos().getFirstName());
 		return service.save(advisor);
+	}
+	
+	@GetMapping("{id}/clients")
+	public Set<Client> getClientsOfThisAdvisor(@PathVariable Long id) {
+		Advisor advisor = service.getById(id).orElse(null);
+		return advisor.getClients();
 	}
 
 }

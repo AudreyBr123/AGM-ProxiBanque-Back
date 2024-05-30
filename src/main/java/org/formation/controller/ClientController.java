@@ -3,10 +3,12 @@ package org.formation.controller;
 import java.net.URI;
 import java.util.List;
 
+import org.formation.model.Advisor;
 import org.formation.model.Client;
 import org.formation.service.ClientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -65,7 +67,19 @@ public class ClientController {
 		Client newClient = service.update(client);
 		return ResponseEntity.ok(newClient);
 	}
-
+	
+	@PutMapping("{clientId}/advisor/{advisorId}")
+	public ResponseEntity<Client> assignAdvisorToClient(@PathVariable Long clientId, @PathVariable Long advisorId) {
+		Client oldClient = service.getById(clientId);
+		
+		if (service.assignAdvisorToClient(clientId, advisorId) == null) {
+			// BUG ceci ne semble pas fonctionner pour le moment
+			return ResponseEntity.notFound().build();
+		}
+		
+		service.assignAdvisorToClient(clientId, advisorId);
+		return ResponseEntity.ok(service.getById(clientId));
+	}
 	
 	@DeleteMapping("{id}")
 	void deleteClient(@PathVariable Long id) {	
