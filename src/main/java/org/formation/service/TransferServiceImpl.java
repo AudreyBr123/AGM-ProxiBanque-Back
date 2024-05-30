@@ -36,13 +36,13 @@ public class TransferServiceImpl implements TransferService {
 	// Transformer le type de retour des fonctions privées en response
 	// entity<DTO_response>, et celui d'executeTransfer aussi
 	// Transformer le type de retour dans le controleur
+	
 
 	/**
 	 * Méthode publique pour executer un virement
-	 * @return 
 	 */
 	@Override
-	public ResponseEntity<TransferDtoResponse> executeTransfer(TransferDtoRequest transfer) {
+	public ResponseEntity<TransferDtoResponse> executeTransfer(TransferDtoRequest transfer) throws NullPointerException,TransferException {
 		if (transfer.getTypeCreditAccount().equals("currentAccount")
 				&& transfer.getTypeDebitAccount().equals("savingAccount")) {
 			return initiateTransferFromSavingToCurrent(transfer);
@@ -62,21 +62,27 @@ public class TransferServiceImpl implements TransferService {
 	 * Méthode privée pour executer un virement d'un compte épargne vers un compte
 	 * courant. Elle n'est exécutable qu'entre les comptes d'un client
 	 */
-	private ResponseEntity<TransferDtoResponse> initiateTransferFromSavingToCurrent(TransferDtoRequest transfer) {
-		// trouve le compte de crédit (courant)
-		CurrentAccount creditAccount = currentAccountRepository.findById(transfer.getIdCreditAccount()).orElse(null);
+	private ResponseEntity<TransferDtoResponse> initiateTransferFromSavingToCurrent(TransferDtoRequest transfer) throws NullPointerException,TransferException {
+		// Trouve le compte de crédit (courant)
+		CurrentAccount creditAccount = currentAccountRepository
+				.findById(transfer.getIdCreditAccount())
+				.orElseThrow(() -> new NullPointerException());
 
-		// trouve le compte de débit (épargne)
-		SavingAccount debitAccount = savingAccountRepository.findById(transfer.getIdDebitAccount()).orElse(null);
+		// Trouve le compte de débit (épargne)
+		SavingAccount debitAccount = savingAccountRepository
+				.findById(transfer.getIdDebitAccount())
+				.orElseThrow(() -> new NullPointerException());
 
-		// trouve les clients associés aux comptes
+		// Trouve les clients associés aux comptes
 		Client clientCreditAccount = clientRepository.findByCurrentAccount(creditAccount);
 		Client clientDebitAccount = clientRepository.findBySavingAccount(debitAccount);
 
-		// si les deux ne sont pas null et que le virement est entre les comptes d'un
-		// même client, executer le virement
-		if (debitAccount != null && creditAccount != null && (clientCreditAccount == clientDebitAccount)) {
-
+		// Si le virement est entre les comptes de clients différents, lancer une exception
+		if (clientCreditAccount != clientDebitAccount) {
+			throw new TransferException("Erreur, il n'est pas possible de faire un virement d'un compte épargne au compte courant d'un autre client");
+		}
+		
+		// Si on arrive ici, aucune exception n'a été soulevée : on fait le virement 
 			LOG.debug("Solde du compte à créditer : " + creditAccount.getBalance() + " appartenant au client d'id "
 					+ clientCreditAccount.getId() + "\n Solde du compte à débiter : " + debitAccount.getBalance()
 					+ " appartenant au client d'id " + clientDebitAccount.getId() + "\n Montant : "
@@ -84,7 +90,7 @@ public class TransferServiceImpl implements TransferService {
 			debitAccount.debitAmount(transfer.getAmount());
 			creditAccount.creditAmount(transfer.getAmount());
 
-			// persister les deux
+			// Persister les deux
 			currentAccountRepository.save(creditAccount);
 			savingAccountRepository.save(debitAccount);
 			LOG.debug("Nouveaux montants persistés");
@@ -94,12 +100,6 @@ public class TransferServiceImpl implements TransferService {
 
 			TransferDtoResponse transferDtoResponse = new TransferDtoResponse(transfer.getAmount());
 			return ResponseEntity.ok().body(transferDtoResponse);
-		} else {
-			LOG.error(
-					"Erreur, il n'est pas possible de faire un virement d'un compte épargne au compte courant d'un autre client, ou un des comptes n'existe pas");
-			return ResponseEntity.notFound().build();
-		}
-
 	}
 
 	/**

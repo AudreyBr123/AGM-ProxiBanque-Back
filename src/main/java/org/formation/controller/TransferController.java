@@ -2,6 +2,7 @@ package org.formation.controller;
 
 import org.formation.dto.TransferDtoRequest;
 import org.formation.dto.TransferDtoResponse;
+import org.formation.service.TransferException;
 import org.formation.service.TransferServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,8 +23,16 @@ public class TransferController {
 	}
 	
 	@PutMapping
-	public ResponseEntity<TransferDtoResponse> transfer(@RequestBody @Valid TransferDtoRequest transfer) {
-		return transferService.executeTransfer(transfer);
+	public ResponseEntity<TransferDtoResponse> transfer(@RequestBody @Valid TransferDtoRequest transfer) throws NullPointerException, TransferException {
+//		try {
+			return transferService.executeTransfer(transfer);						
+//		} catch (Exception e) {
+//			if (e instanceof NullPointerException) {
+//				return ResponseEntity.notFound().build();				
+//			}else {
+//				return ResponseEntity.badRequest().build();
+//			}
+//		}
 	}
 
 }
