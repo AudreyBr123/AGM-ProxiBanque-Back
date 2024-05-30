@@ -53,6 +53,10 @@ public class TransferServiceImpl implements TransferService {
 				&& transfer.getTypeDebitAccount().equals("currentAccount")) {
 			return initiateTransferFromCurrentToSaving(transfer);
 		}
+		if (transfer.getTypeCreditAccount().equals("savingAccount")
+				&& transfer.getTypeDebitAccount().equals("savingAccount")) {
+			throw new TransferException("Erreur, il n'est pas possible de faire un virement d'un compte épargne à un autre compte épargne");
+		}
 		return ResponseEntity.badRequest().build();
 	}
 
