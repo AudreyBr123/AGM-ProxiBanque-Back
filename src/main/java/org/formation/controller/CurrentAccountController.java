@@ -26,7 +26,7 @@ public class CurrentAccountController {
 		return service.getAll();
 	}
 	
-	//A changer en response entity !
+	//TO DO : changer le type de retour en response entity
 	@GetMapping("{id}")
 	public Optional<CurrentAccount> getCurrentAccount(@PathVariable Long id) {
 		return service.getById(id);
@@ -35,7 +35,7 @@ public class CurrentAccountController {
 	//Pas de post car on ne peut pas post un current account sans client
 	//Par contre, put le fait si l'id n'existe pas
 
-	//Attention, il faut un id dans le body de RESTer !
+	//Attention, il faut un id dans le body de RESTer
 //	@PutMapping("{id}")
 //	public CurrentAccount updateAccount(@PathVariable Long id, @RequestBody CurrentAccount currentAccount) {
 //		return service.save(currentAccount);		

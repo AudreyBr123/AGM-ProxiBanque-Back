@@ -9,7 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import jakarta.validation.ConstraintViolationException;
 
 public interface TransferService {
-
+	
 	public ResponseEntity<TransferDtoResponse> executeTransfer(TransferDtoRequest transfer)
 			throws NullPointerException, TransferException, MethodArgumentNotValidException, ConstraintViolationException;
 

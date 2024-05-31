@@ -4,17 +4,18 @@ import jakarta.validation.constraints.Positive;
 
 public class TransferDtoRequest {
 
-	// types de comptes (peuvent être courant ou épargne : validateur possible?)
+	// Types de comptes (courant ou épargne)
 	String typeCreditAccount;
 	String typeDebitAccount;
 
-	// id des comptes
+	// ID des comptes
 	Long idCreditAccount;
 	Long idDebitAccount;
 
 	@Positive
 	double amount;
 
+	
 	public TransferDtoRequest() {
 	}
 

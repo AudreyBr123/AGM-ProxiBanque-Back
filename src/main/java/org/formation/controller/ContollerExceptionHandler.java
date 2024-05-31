@@ -16,6 +16,9 @@ import jakarta.validation.ConstraintViolationException;
 @RestControllerAdvice
 public class ContollerExceptionHandler {
 
+	// TO DO : gérer la map pour envoyer les infos issues directement de l'exception
+	// lancée (au niveau du field)
+	
 	Map<String, String> errors = new HashMap<>();
 
 	@ExceptionHandler(TransferException.class)
@@ -23,7 +26,7 @@ public class ContollerExceptionHandler {
 	private Map<String, String> handleTransferException(TransferException e) {
 		// Vide la map avant d'ajouter un nouveau message d'erreur
 		errors.clear();
-		
+
 		// Ajoute un message d'erreur
 		String field = "TransferException";
 		String message = e.getMessage();
@@ -43,7 +46,7 @@ public class ContollerExceptionHandler {
 
 		return errors;
 	}
-	
+
 	@ExceptionHandler(ConstraintViolationException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	private Map<String, String> handleConstraintViolationException(ConstraintViolationException e) {

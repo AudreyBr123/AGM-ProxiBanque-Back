@@ -6,7 +6,6 @@ import org.formation.model.Client;
 import org.formation.model.CurrentAccount;
 import org.formation.model.PersonInfos;
 import org.formation.model.SavingAccount;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
