@@ -22,6 +22,7 @@ public class ClientServiceImpl implements ClientService {
 		this.advisorRepository = advisorRepository;
 	}
 	
+
 	@Override
 	public List<Client> getAll() {
 		return repository.findAll();
@@ -51,14 +52,6 @@ public class ClientServiceImpl implements ClientService {
   	public ResponseEntity<Client> assignAdvisorToClient(Long clientId, Long advisorId) throws AssignAdvisorToClientException {
   		Client client = repository.findById(clientId).orElseThrow(() -> new AssignAdvisorToClientException("Erreur, client inconnu"));
   		Advisor advisor = advisorRepository.findById(advisorId).orElseThrow(() -> new AssignAdvisorToClientException("Erreur, conseiller inconnu"));
-  		
-//  		if (client == null) {
-//  			throw new AssignAdvisorToClientException("Erreur, client inconnu");
-//  		}
-//  		
-//  		if (advisor == null) {
-//  			throw new AssignAdvisorToClientException("Erreur, conseiller inconnu");
-//  		}
   		
   		client.setAdvisor(advisor);
   		repository.save(client);
