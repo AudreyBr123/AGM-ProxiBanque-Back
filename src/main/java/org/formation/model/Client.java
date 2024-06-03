@@ -1,5 +1,7 @@
 package org.formation.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -7,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
@@ -25,6 +28,11 @@ public class Client {
 	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "savingAccount_id", unique = true)
 	private SavingAccount savingAccount;
+	
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name="advisor_id")
+	@JsonIgnore
+	private Advisor advisor;
 
 	public Client() {
 	}
@@ -65,6 +73,14 @@ public class Client {
 
 	public void setSavingAccount(SavingAccount savingAccount) {
 		this.savingAccount = savingAccount;
+	}
+	
+	public Advisor getAdvisor() {
+		return advisor;
+	}
+
+	public void setAdvisor(Advisor advisor) {
+		this.advisor = advisor;
 	}
 
 }

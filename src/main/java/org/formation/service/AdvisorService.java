@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.formation.model.Advisor;
+import org.formation.model.Client;
 
 public interface AdvisorService {
 
@@ -11,8 +12,6 @@ public interface AdvisorService {
 
 	Advisor save(Advisor advisor);
 	
-	Optional<Advisor> getById(Long id);
-	
-	
+	Optional<Advisor> getById(Long id);	
 
 }
