@@ -45,6 +45,7 @@ public class ClientController {
 	
 	@PostMapping
 	public Client postClient (@RequestBody Client client) {
+		LOG.debug("Nouveau client crée avec " + client);
 		return service.save(client);		
 	}
 

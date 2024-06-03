@@ -23,11 +23,11 @@ public class Client {
 	@Embedded
 	private PersonInfos personInfos;
 
-	@OneToOne(cascade = CascadeType.PERSIST)
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "currentAccount_id", unique = true)
 	private CurrentAccount currentAccount;
 
-	@OneToOne(cascade = CascadeType.PERSIST)
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "savingAccount_id", unique = true)
 	private SavingAccount savingAccount;
 	
@@ -83,6 +83,12 @@ public class Client {
 
 	public void setAdvisor(Advisor advisor) {
 		this.advisor = advisor;
+	}
+
+	@Override
+	public String toString() {
+		return "Client [id=" + id + ", personInfos=" + personInfos + ", currentAccount=" + currentAccount
+				+ ", savingAccount=" + savingAccount + ", advisor=" + advisor + "]";
 	}
 
 }

@@ -97,4 +97,12 @@ public class PersonInfos {
 	public void setCity(String city) {
 		this.city = city;
 	}
+
+	@Override
+	public String toString() {
+		return "PersonInfos [firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phoneNumber="
+				+ phoneNumber + ", street=" + street + ", zipCode=" + zipCode + ", city=" + city + "]";
+	}
+
+	
 }
