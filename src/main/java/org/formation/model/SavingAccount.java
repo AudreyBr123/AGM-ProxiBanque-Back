@@ -1,6 +1,11 @@
 package org.formation.model;
 
 import java.time.LocalDate;
+
+import org.formation.service.TransferServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,9 +32,15 @@ public class SavingAccount {
 		this.creationDate = LocalDate.now();
 	}
 
-	public SavingAccount(double balance) {
+	// public SavingAccount(@Min(value = 0, message = "Balance cannot be lower than 0") double balance) {
+	// 	this.balance = balance;
+	// 	this.creationDate = LocalDate.now();
+	// }
+
+	public SavingAccount(@Min(value = 0, message = "Balance cannot be lower than 0") double balance,
+			LocalDate creationDate) {
 		this.balance = balance;
-		this.creationDate = LocalDate.now();
+		this.creationDate = creationDate;
 	}
 
 	public Long getId() {

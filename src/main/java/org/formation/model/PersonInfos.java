@@ -1,15 +1,31 @@
 package org.formation.model;
 
 import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 @Embeddable
 public class PersonInfos {
+	@NotBlank(message = "first name cannot be null or blank")
     private String firstName;
+
+	@NotBlank(message = "last name cannot be null or blank")
 	private String lastName;
+	
+	@Email(message = "Email must be valid")
 	private String email;
+	
+	@Pattern(regexp="(^$|[0-9]{10})", message = "Phone number must be valid")
 	private String phoneNumber;
+	
+	@NotBlank(message = "Street cannot be null or blank")
 	private String street;
+	
+	@Pattern(regexp="(^$|[0-9]{1,5})", message = "Zipcode number must be valid")
 	private String zipCode;
+	
+	@NotBlank(message = "last name cannot be null or blank")
 	private String city;
 
 	public PersonInfos() {
@@ -81,4 +97,12 @@ public class PersonInfos {
 	public void setCity(String city) {
 		this.city = city;
 	}
+
+	@Override
+	public String toString() {
+		return "PersonInfos [firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phoneNumber="
+				+ phoneNumber + ", street=" + street + ", zipCode=" + zipCode + ", city=" + city + "]";
+	}
+
+	
 }
