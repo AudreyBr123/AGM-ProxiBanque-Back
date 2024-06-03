@@ -1,14 +1,13 @@
 package org.formation.model;
 
 import java.time.LocalDate;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 public class CurrentAccount {
@@ -16,6 +15,7 @@ public class CurrentAccount {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Positive
 	private double balance;
 	private LocalDate creationDate;
 
@@ -67,5 +67,15 @@ public class CurrentAccount {
 	@Override
 	public String toString() {
 		return "Account [id=" + id + ", balance=" + balance + ", creationDate=" + creationDate + "]";
+	}
+	
+	
+	//METHODES
+	public void creditAmount(double amount) {
+		setBalance(getBalance() + amount);
+	}
+	
+	public void debitAmount(double amount) {
+		setBalance(getBalance() - amount);
 	}
 }

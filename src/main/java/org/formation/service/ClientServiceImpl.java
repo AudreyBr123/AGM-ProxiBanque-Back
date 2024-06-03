@@ -1,6 +1,7 @@
 package org.formation.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.formation.model.Advisor;
 import org.formation.model.Client;
@@ -54,9 +55,9 @@ public class ClientServiceImpl implements ClientService {
 		return repository.save(client);
 	}
     
-  	@Override
-	public Client getById(Long id) {
-		return repository.findById(id).orElse(null);
+  @Override
+	public Optional<Client> getById(Long id) {
+		return repository.findById(id);
 	}
   	
   	@Override
