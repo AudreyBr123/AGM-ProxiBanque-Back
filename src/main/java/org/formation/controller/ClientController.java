@@ -3,21 +3,20 @@ package org.formation.controller;
 import java.net.URI;
 import java.util.List;
 
-import org.formation.model.Advisor;
 import org.formation.model.Client;
 import org.formation.service.ClientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
@@ -51,7 +50,7 @@ public class ClientController {
 
 	@PutMapping("{id}")
 	public ResponseEntity<Client> putClient(@PathVariable Long id, @RequestBody Client client) {
-		Client oldClient = service.getById(id);
+		Client oldClient = service.getById(id).orElse(null);
 
 		if(oldClient == null) {
 			Client savedClient = service.save(client);
@@ -67,7 +66,7 @@ public class ClientController {
 	
 	@PutMapping("{clientId}/advisor/{advisorId}")
 	public ResponseEntity<Client> assignAdvisorToClient(@PathVariable Long clientId, @PathVariable Long advisorId) {
-		Client oldClient = service.getById(clientId);
+		Client oldClient = service.getById(clientId).orElse(null);
 		
 		if (service.assignAdvisorToClient(clientId, advisorId) == null) {
 			// BUG ceci ne semble pas fonctionner pour le moment
@@ -75,7 +74,7 @@ public class ClientController {
 		}
 		
 		service.assignAdvisorToClient(clientId, advisorId);
-		return ResponseEntity.ok(service.getById(clientId));
+		return ResponseEntity.ok(service.getById(clientId).orElse(null));
 	}
 	
 	@DeleteMapping("{id}")
