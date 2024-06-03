@@ -1,5 +1,6 @@
 package org.formation.init;
 
+import org.formation.exception.AssignAdvisorToClientException;
 import org.formation.model.Advisor;
 import org.formation.model.Client;
 import org.formation.model.CurrentAccount;
@@ -21,7 +22,7 @@ public class ReInitDefaultDataSet {
 	AdvisorService advisorService;
 	
 	@PostConstruct
-	public void dataInit() {
+	public void dataInit() throws AssignAdvisorToClientException {
 		System.out.println("Initialisation d'un jeu de données");
 		
 		// Clients (avec comptes)

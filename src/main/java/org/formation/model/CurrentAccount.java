@@ -27,16 +27,16 @@ public class CurrentAccount {
 		this.creationDate = LocalDate.now();
 	}
 
-	// public CurrentAccount(@Min(value = 0, message = "Balance cannot be lower than 0") double balance) {
-	// 	this.balance = balance;
-	// 	this.creationDate = LocalDate.now();
-	// }
+	 public CurrentAccount(@Min(value = 0, message = "Balance cannot be lower than 0") double balance) {
+	 	this.balance = balance;
+	 	this.creationDate = LocalDate.now();
+	 }
 
-	public CurrentAccount(@Min(value = 0, message = "Balance cannot be lower than 0") double balance,
-			LocalDate creationDate) {
-		this.balance = balance;
-		this.creationDate = creationDate;
-	}
+//	public CurrentAccount(@Min(value = 0, message = "Balance cannot be lower than 0") double balance,
+//			LocalDate creationDate) {
+//		this.balance = balance;
+//		this.creationDate = creationDate;
+//	}
 
 	public Long getId() {
 		return id;
