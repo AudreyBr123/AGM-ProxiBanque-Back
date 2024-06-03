@@ -3,10 +3,13 @@ package org.formation.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.formation.exception.AssignAdvisorToClientException;
+import org.formation.exception.TransferException;
 import org.formation.model.Advisor;
 import org.formation.model.Client;
 import org.formation.repository.AdvisorRepository;
 import org.formation.repository.ClientRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +21,7 @@ public class ClientServiceImpl implements ClientService {
 		this.repository = repository;
 		this.advisorRepository = advisorRepository;
 	}
+	
 
 	@Override
 	public List<Client> getAll() {
@@ -45,17 +49,13 @@ public class ClientServiceImpl implements ClientService {
 	}
   	
   	@Override
-  	public Client assignAdvisorToClient(Long clientId, Long advisorId) {
-  		Client client = repository.findById(clientId).orElse(null);
-  		Advisor advisor = advisorRepository.findById(advisorId).orElse(null);
-  		
-  		if (client == null || advisor == null) {
-  			return null;
-  		}
+  	public ResponseEntity<Client> assignAdvisorToClient(Long clientId, Long advisorId) throws AssignAdvisorToClientException {
+  		Client client = repository.findById(clientId).orElseThrow(() -> new AssignAdvisorToClientException("Erreur, client inconnu"));
+  		Advisor advisor = advisorRepository.findById(advisorId).orElseThrow(() -> new AssignAdvisorToClientException("Erreur, conseiller inconnu"));
   		
   		client.setAdvisor(advisor);
   		repository.save(client);
-  		return client;
+		return ResponseEntity.ok(client);
   	}
 
 }

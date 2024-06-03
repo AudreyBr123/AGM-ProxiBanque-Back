@@ -3,7 +3,9 @@ package org.formation.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.formation.exception.AssignAdvisorToClientException;
 import org.formation.model.Client;
+import org.springframework.http.ResponseEntity;
 
 public interface ClientService {
 	List<Client> getAll();
@@ -11,5 +13,5 @@ public interface ClientService {
 	void deleteById(Long id);
 	Optional<Client> getById(Long id);
 	Client update(Client client);
-	Client assignAdvisorToClient(Long clientId, Long advisorId);
+	ResponseEntity<Client> assignAdvisorToClient(Long clientId, Long advisorId) throws AssignAdvisorToClientException;
 }
