@@ -10,4 +10,6 @@ public interface ClientService {
 	Client save(Client client);
 	void deleteById(Long id);
 	Optional<Client> getById(Long id);
+	Client update(Client client);
+	Client assignAdvisorToClient(Long clientId, Long advisorId);
 }

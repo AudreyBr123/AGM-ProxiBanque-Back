@@ -1,9 +1,7 @@
 package org.formation.model;
 
 import java.time.LocalDate;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,10 +20,11 @@ public class SavingAccount {
 	private LocalDate creationDate;
 
 	@OneToOne(mappedBy = "savingAccount")
-	@JsonIgnore
-	private Client client;
+	@JsonBackReference
+  private Client client;
 
 	public SavingAccount() {
+		this.creationDate = LocalDate.now();
 	}
 
 	public SavingAccount(double balance) {
