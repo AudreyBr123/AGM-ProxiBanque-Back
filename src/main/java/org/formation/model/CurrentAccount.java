@@ -7,7 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Min;
 
 @Entity
 public class CurrentAccount {
@@ -15,7 +15,7 @@ public class CurrentAccount {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Positive
+	@Min(value = 0, message="Balance cannot be lower than 0")
 	private double balance;
 	private LocalDate creationDate;
 
