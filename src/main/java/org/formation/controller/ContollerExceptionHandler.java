@@ -3,6 +3,7 @@ package org.formation.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.formation.exception.AssignAdvisorToClientException;
 import org.formation.exception.TransferException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -69,6 +70,21 @@ public class ContollerExceptionHandler {
 
 			errors.put(field, message);
 		});
+
+		return errors;
+	}
+	
+
+	@ExceptionHandler(AssignAdvisorToClientException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	private Map<String, String> handleAssignAdvisorToClientException(AssignAdvisorToClientException e) {
+		// Vide la map avant d'ajouter un nouveau message d'erreur
+		errors.clear();
+
+		// Ajoute un message d'erreur
+		String field = "AssignAdvisorToClient Exception";
+		String message = e.getMessage();
+		errors.put(field, message);
 
 		return errors;
 	}

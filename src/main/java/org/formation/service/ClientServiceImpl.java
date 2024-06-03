@@ -3,15 +3,17 @@ package org.formation.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.formation.exception.AssignAdvisorToClientException;
+import org.formation.exception.TransferException;
 import org.formation.model.Advisor;
 import org.formation.model.Client;
 import org.formation.repository.AdvisorRepository;
 import org.formation.repository.ClientRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ClientServiceImpl implements ClientService {
-//	private List<Client> clients = new ArrayList<>();
 	private ClientRepository repository;
 	private AdvisorRepository advisorRepository;
 	
@@ -20,24 +22,9 @@ public class ClientServiceImpl implements ClientService {
 		this.advisorRepository = advisorRepository;
 	}
 	
-//	public ClientServiceImpl() {
-//		
-//		Address genericAddress = new Address("rue de la paix", "75000", "Paris");
-//		CurrentAccount genericCurrentAccount = new CurrentAccount(122.2);
-//		SavingAccount genericSavingAccount = new SavingAccount(122.2);
-//
-//		
-//		clients.addAll(List.of(
-//				new Client("Audrey", "Boureau", "a.boureau@gmail.com", "0000000", genericAddress, genericCurrentAccount, genericSavingAccount),
-//				new Client("Gwendal", "Breton", "g.breton@gmail.com", "0000000", genericAddress, genericCurrentAccount, genericSavingAccount),
-//				new Client("Marine", "Spaak", "m.spaak@gmail.com", "0000000", genericAddress, genericCurrentAccount, genericSavingAccount)
-//				));
-//		}
-
 	@Override
 	public List<Client> getAll() {
 		return repository.findAll();
-	//	return clients;
 	}
 
 	@Override
@@ -61,17 +48,21 @@ public class ClientServiceImpl implements ClientService {
 	}
   	
   	@Override
-  	public Client assignAdvisorToClient(Long clientId, Long advisorId) {
-  		Client client = repository.findById(clientId).orElse(null);
-  		Advisor advisor = advisorRepository.findById(advisorId).orElse(null);
+  	public ResponseEntity<Client> assignAdvisorToClient(Long clientId, Long advisorId) throws AssignAdvisorToClientException {
+  		Client client = repository.findById(clientId).orElseThrow(() -> new AssignAdvisorToClientException("Erreur, client inconnu"));
+  		Advisor advisor = advisorRepository.findById(advisorId).orElseThrow(() -> new AssignAdvisorToClientException("Erreur, conseiller inconnu"));
   		
-  		if (client == null || advisor == null) {
-  			return null;
-  		}
+//  		if (client == null) {
+//  			throw new AssignAdvisorToClientException("Erreur, client inconnu");
+//  		}
+//  		
+//  		if (advisor == null) {
+//  			throw new AssignAdvisorToClientException("Erreur, conseiller inconnu");
+//  		}
   		
   		client.setAdvisor(advisor);
   		repository.save(client);
-  		return client;
+		return ResponseEntity.ok(client);
   	}
 
 }

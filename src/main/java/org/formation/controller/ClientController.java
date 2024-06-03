@@ -3,6 +3,7 @@ package org.formation.controller;
 import java.net.URI;
 import java.util.List;
 
+import org.formation.exception.AssignAdvisorToClientException;
 import org.formation.model.Client;
 import org.formation.service.ClientService;
 import org.slf4j.Logger;
@@ -65,16 +66,9 @@ public class ClientController {
 	}
 	
 	@PutMapping("{clientId}/advisor/{advisorId}")
-	public ResponseEntity<Client> assignAdvisorToClient(@PathVariable Long clientId, @PathVariable Long advisorId) {
-		Client oldClient = service.getById(clientId).orElse(null);
-		
-		if (service.assignAdvisorToClient(clientId, advisorId) == null) {
-			// BUG ceci ne semble pas fonctionner pour le moment
-			return ResponseEntity.notFound().build();
-		}
-		
-		service.assignAdvisorToClient(clientId, advisorId);
-		return ResponseEntity.ok(service.getById(clientId).orElse(null));
+	public ResponseEntity<Client> assignAdvisorToClient(@PathVariable Long clientId, @PathVariable Long advisorId) throws AssignAdvisorToClientException {
+		// AssignAdvisorToClientException gère le client null ou advisor null
+		return service.assignAdvisorToClient(clientId, advisorId);
 	}
 	
 	@DeleteMapping("{id}")
