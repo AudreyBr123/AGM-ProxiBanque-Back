@@ -35,7 +35,7 @@ public class ReInitDefaultDataSet {
 		SavingAccount secondSavingAccount = new SavingAccount(2088.1);
 		
 		PersonInfos thirdInfos = new PersonInfos("Marine",	"Spaak", "marine.spaak@proxibanque.fr", "0608080808", "place Angular", "44000", "Nantes");
-		CurrentAccount thirdCurrentAccount = new CurrentAccount(655.5);
+		CurrentAccount thirdCurrentAccount = new CurrentAccount(5.5);
 		SavingAccount thirdSavingAccount = new SavingAccount(1000);
 		
 		Client firstClient = new Client(firstInfos, firstCurrentAccount, firstSavingAccount);
