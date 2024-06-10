@@ -14,7 +14,7 @@ public interface TransferService {
 	 * Méthode pour effectuer un virement : elle peut générer des exceptions qui
 	 * seront gérées au niveau du contrôleur
 	 */
-	public ResponseEntity<TransferDtoResponse> executeTransfer(TransferDtoRequest transfer) throws NullPointerException,
-			TransferException, MethodArgumentNotValidException, ConstraintViolationException;
+	public ResponseEntity<TransferDtoResponse> executeTransfer(TransferDtoRequest transfer) 
+			throws MethodArgumentNotValidException;
 
 }

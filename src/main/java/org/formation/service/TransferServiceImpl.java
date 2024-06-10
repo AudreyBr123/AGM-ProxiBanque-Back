@@ -38,8 +38,8 @@ public class TransferServiceImpl implements TransferService {
 	 * Méthode publique pour executer un virement
 	 */
 	@Override
-	public ResponseEntity<TransferDtoResponse> executeTransfer(TransferDtoRequest transfer) throws NullPointerException,
-			TransferException, MethodArgumentNotValidException, ConstraintViolationException {
+	public ResponseEntity<TransferDtoResponse> executeTransfer(TransferDtoRequest transfer) 
+			throws MethodArgumentNotValidException {
 		if (transfer.getTypeCreditAccount().equals("currentAccount")
 				&& transfer.getTypeDebitAccount().equals("savingAccount")) {
 			return initiateTransferFromSavingToCurrent(transfer);
@@ -64,17 +64,16 @@ public class TransferServiceImpl implements TransferService {
 	 * Méthode privée pour executer un virement d'un compte épargne vers un compte
 	 * courant. Elle n'est exécutable qu'entre les comptes d'un client
 	 */
-	private ResponseEntity<TransferDtoResponse> initiateTransferFromSavingToCurrent(TransferDtoRequest transfer)
-			throws NullPointerException, TransferException, MethodArgumentNotValidException,
-			ConstraintViolationException {
+	private ResponseEntity<TransferDtoResponse> initiateTransferFromSavingToCurrent(TransferDtoRequest transfer) 
+			throws MethodArgumentNotValidException {
 
 		// Trouve le compte de crédit (courant)
 		CurrentAccount creditAccount = currentAccountRepository.findById(transfer.getIdCreditAccount())
-				.orElseThrow(() -> new NullPointerException());
+				.orElseThrow(() -> new TransferException("L'id du compte créditeur n'est pas valide"));
 
 		// Trouve le compte de débit (épargne)
 		SavingAccount debitAccount = savingAccountRepository.findById(transfer.getIdDebitAccount())
-				.orElseThrow(() -> new NullPointerException());
+				.orElseThrow(() -> new TransferException("L'id du compte débiteur n'est pas valide"));
 
 		// Trouve les clients associés aux comptes
 		Client clientCreditAccount = clientRepository.findByCurrentAccount(creditAccount);
@@ -113,14 +112,14 @@ public class TransferServiceImpl implements TransferService {
 	 * client)
 	 */
 	private ResponseEntity<TransferDtoResponse> initiateTransferFromCurrentToCurrent(TransferDtoRequest transfer)
-			throws NullPointerException, MethodArgumentNotValidException, ConstraintViolationException {
+			throws MethodArgumentNotValidException {
 		// Trouve le compte de crédit (courant)
 		CurrentAccount creditAccount = currentAccountRepository.findById(transfer.getIdCreditAccount())
-				.orElseThrow(() -> new NullPointerException());
+				.orElseThrow(() -> new TransferException("L'id du compte créditeur n'est pas valide"));
 
 		// Trouve le compte de débit (courant)
 		CurrentAccount debitAccount = currentAccountRepository.findById(transfer.getIdDebitAccount())
-				.orElseThrow(() -> new NullPointerException());
+				.orElseThrow(() -> new TransferException("L'id du compte débiteur n'est pas valide"));
 
 		// Si on arrive ici, aucune exception n'a été soulevée : on fait le virement
 		LOG.debug("Solde du compte à créditer : " + creditAccount.getBalance() + "\n Solde du compte à débiter : "
@@ -148,15 +147,14 @@ public class TransferServiceImpl implements TransferService {
 	 * épargne. Elle n'est exécutable qu'entre les comptes d'un client.
 	 */
 	private ResponseEntity<TransferDtoResponse> initiateTransferFromCurrentToSaving(TransferDtoRequest transfer)
-			throws NullPointerException, TransferException, MethodArgumentNotValidException,
-			ConstraintViolationException {
+			throws MethodArgumentNotValidException {
 		// Trouve le compte de crédit (courant)
 		SavingAccount creditAccount = savingAccountRepository.findById(transfer.getIdCreditAccount())
-				.orElseThrow(() -> new NullPointerException());
+				.orElseThrow(() -> new TransferException("L'id du compte créditeur n'est pas valide"));
 
 		// Trouve le compte de débit (épargne)
 		CurrentAccount debitAccount = currentAccountRepository.findById(transfer.getIdDebitAccount())
-				.orElseThrow(() -> new NullPointerException());
+				.orElseThrow(() -> new TransferException("L'id du compte débiteur n'est pas valide"));
 
 		// Trouve les clients associés aux comptes
 		Client clientCreditAccount = clientRepository.findBySavingAccount(creditAccount);

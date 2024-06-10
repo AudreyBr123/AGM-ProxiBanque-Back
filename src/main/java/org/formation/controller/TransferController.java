@@ -32,7 +32,7 @@ public class TransferController {
 
 	@PutMapping
 	public ResponseEntity<TransferDtoResponse> transfer(@RequestBody @Valid TransferDtoRequest transfer)
-			throws NullPointerException, TransferException, MethodArgumentNotValidException, ConstraintViolationException {
+			throws MethodArgumentNotValidException {
 		return transferService.executeTransfer(transfer);
 	}
 
