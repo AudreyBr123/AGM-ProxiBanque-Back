@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+/**
+ * Classe qui récupère les requêtes lancées par le front et y répond
+ */
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/clients")
@@ -33,7 +35,7 @@ public class ClientController {
 	
 	@GetMapping
 	public List<Client> getClients() {
-		LOG.debug("======================> Accès à la liste des clients depuis le back-end");
+		LOG.debug("Accès à la liste des clients depuis le back-end");
 		return service.getAll();
 	}
 	
@@ -67,7 +69,8 @@ public class ClientController {
 	}
 	
 	@PutMapping("{clientId}/advisor/{advisorId}")
-	public ResponseEntity<Client> assignAdvisorToClient(@PathVariable Long clientId, @PathVariable Long advisorId) throws AssignAdvisorToClientException {
+	public ResponseEntity<Client> assignAdvisorToClient(@PathVariable Long clientId, @PathVariable Long advisorId) 
+			throws AssignAdvisorToClientException {
 		// AssignAdvisorToClientException gère le client null ou advisor null
 		return service.assignAdvisorToClient(clientId, advisorId);
 	}

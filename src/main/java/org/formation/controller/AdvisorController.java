@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Classe qui récupère les requêtes lancées par le front et y répond
+ */
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/advisors")
@@ -37,28 +40,26 @@ public class AdvisorController {
 
 	@GetMapping("{id}")
 	public ResponseEntity<Advisor> getAdvisor(@PathVariable Long id) {
-		LOG.debug("Accès au conseiller d'id " +id);
-		return service.getById(id).map(c -> ResponseEntity.ok().body(c))
-		.orElse(ResponseEntity.notFound().build());
+		LOG.debug("Accès au conseiller d'id " + id);
+		return service.getById(id).map(c -> ResponseEntity.ok().body(c)).orElse(ResponseEntity.notFound().build());
 	}
-	
+
 	@GetMapping("{id}/number")
 	public int getNumberOfClients(@PathVariable Long id) {
-		LOG.debug("Nombre de clients du conseiller d'id " +id);
+		LOG.debug("Nombre de clients du conseiller d'id " + id);
 		Advisor advisor = service.getById(id).orElse(null);
 		return advisor.getNumberOfClients();
 	}
-	
-	@PostMapping
-	public Advisor postAdvisor(@RequestBody Advisor advisor) {
-		LOG.debug("Création du conseiller " + advisor.getPersonInfos().getFirstName());
-		return service.save(advisor);
-	}
-	
+
 	@GetMapping("{id}/clients")
 	public Set<Client> getClientsOfThisAdvisor(@PathVariable Long id) {
 		Advisor advisor = service.getById(id).orElse(null);
 		return advisor.getClients();
 	}
 
+	@PostMapping
+	public Advisor postAdvisor(@RequestBody Advisor advisor) {
+		LOG.debug("Création du conseiller " + advisor.getPersonInfos().getFirstName());
+		return service.save(advisor);
+	}
 }

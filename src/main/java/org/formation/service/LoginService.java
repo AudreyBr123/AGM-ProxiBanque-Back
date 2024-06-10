@@ -6,12 +6,13 @@ import java.util.Map;
 import org.formation.model.User;
 import org.springframework.stereotype.Service;
 
+/**
+ * Pour la V1 du login, on predefinit un couple login/password dedie au manager.
+ * On poste une proposition de login/password, on vérifie s'il vaut bien ce qui est prévu.
+ * 	Si oui, on renvoie le role MANAGER, sinon le role GUEST
+ */
 @Service
 public class LoginService {
-	
-	//Pour la V1 du login, on predefinit un couple login/password dedie au manager
-	//On poste une proposition de login/password, on verifie s'il vaut bien ce qui est prevu
-	//Si oui, on renvoie le role MANAGER, sinon le role GUEST
 	
     public Map<String, String> login(User user) {
         Map<String, String> response = new HashMap<>();
