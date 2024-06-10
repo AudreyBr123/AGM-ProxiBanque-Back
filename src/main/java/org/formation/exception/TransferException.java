@@ -1,6 +1,6 @@
 package org.formation.exception;
 
-public class TransferException extends Exception {
+public class TransferException extends RuntimeException {
 	// Exception lancée en cas de virement invalide
 
 	private static final long serialVersionUID = 1L;

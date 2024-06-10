@@ -41,22 +41,6 @@ public class ContollerExceptionHandler {
 	}
 
 	/**
-	 * Méthode qui gère les exceptions liées aux informations vides.
-	 * Ex : le compte n'existe pas.
-	 */
-	@ExceptionHandler(NullPointerException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	private Map<String, String> handleNullPointerException(NullPointerException e) {
-		errors.clear();
-		String field = "Account";
-		String message = e.getMessage();
-
-		errors.put(field, message);
-
-		return errors;
-	}
-
-	/**
 	 * Méthode qui gère les valeurs qui ne peuvent pas être persistées.
 	 * Ex : le montant indiqué est plus élevé que le solde sur le compte débiteur.
 	 */
