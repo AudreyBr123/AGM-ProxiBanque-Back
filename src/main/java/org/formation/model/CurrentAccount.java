@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 
 @Entity
@@ -27,16 +28,10 @@ public class CurrentAccount {
 		this.creationDate = LocalDate.now();
 	}
 
-	 public CurrentAccount(@Min(value = 0, message = "Balance cannot be lower than 0") double balance) {
+	 public CurrentAccount(@Valid double balance) {
 	 	this.balance = balance;
 	 	this.creationDate = LocalDate.now();
 	 }
-
-//	public CurrentAccount(@Min(value = 0, message = "Balance cannot be lower than 0") double balance,
-//			LocalDate creationDate) {
-//		this.balance = balance;
-//		this.creationDate = creationDate;
-//	}
 
 	public Long getId() {
 		return id;

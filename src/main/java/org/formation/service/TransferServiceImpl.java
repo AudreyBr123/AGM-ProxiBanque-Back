@@ -145,7 +145,7 @@ public class TransferServiceImpl implements TransferService {
 
 	/**
 	 * Méthode privée pour executer un virement d'un compte courant vers un compte
-	 * épargne. Elle n'est exécutable qu'entre les comptes d'un client
+	 * épargne. Elle n'est exécutable qu'entre les comptes d'un client.
 	 */
 	private ResponseEntity<TransferDtoResponse> initiateTransferFromCurrentToSaving(TransferDtoRequest transfer)
 			throws NullPointerException, TransferException, MethodArgumentNotValidException,
@@ -200,11 +200,8 @@ public class TransferServiceImpl implements TransferService {
 		this.savingAccountRepository = savingAccountRepository;
 	}
 
-
 	public void setClientRepository(ClientRepository clientRepository) {
 		this.clientRepository = clientRepository;
 	}
 
-	
-	
 }

@@ -5,11 +5,18 @@ import org.formation.model.CurrentAccount;
 import org.formation.model.SavingAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+/**
+ * JPA Repository permettant d'interragir avec les données des clients
+ */
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
-	// Permet de retrouver le client à partir de son compte courant ou épargne,
-	// utilisé dans les virements
+	/**
+	 * Méthode pour retrouver un client à partir de son compte courant
+	 */
 	Client findByCurrentAccount(CurrentAccount currentAccount);
 
+	/**
+	 * Méthode pour retrouver un client à partir de son compte épargne
+	 */
 	Client findBySavingAccount(SavingAccount savingAccount);
 }

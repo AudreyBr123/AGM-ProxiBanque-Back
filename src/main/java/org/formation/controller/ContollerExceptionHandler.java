@@ -14,14 +14,18 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import jakarta.validation.ConstraintViolationException;
 
+/**
+ * Classe qui récupère les différentes erreurs lancées par les controlleurs. 
+ */
 @RestControllerAdvice
 public class ContollerExceptionHandler {
 
-	// TO DO : gérer la map pour envoyer les infos issues directement de l'exception
-	// lancée (au niveau du field)
-	
 	Map<String, String> errors = new HashMap<>();
 
+	/**
+	 * Méthode qui gère les exceptions liées aux virements.
+	 * Ex : tentative de faire un virement entre les comptes épargnes de deux clients différents.
+	 */
 	@ExceptionHandler(TransferException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	private Map<String, String> handleTransferException(TransferException e) {
@@ -36,6 +40,10 @@ public class ContollerExceptionHandler {
 		return errors;
 	}
 
+	/**
+	 * Méthode qui gère les exceptions liées aux informations vides.
+	 * Ex : le compte n'existe pas.
+	 */
 	@ExceptionHandler(NullPointerException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	private Map<String, String> handleNullPointerException(NullPointerException e) {
@@ -48,6 +56,10 @@ public class ContollerExceptionHandler {
 		return errors;
 	}
 
+	/**
+	 * Méthode qui gère les valeurs qui ne peuvent pas être persistées.
+	 * Ex : le montant indiqué est plus élevé que le solde sur le compte débiteur.
+	 */
 	@ExceptionHandler(ConstraintViolationException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	private Map<String, String> handleConstraintViolationException(ConstraintViolationException e) {
@@ -60,6 +72,10 @@ public class ContollerExceptionHandler {
 		return errors;
 	}
 
+	/**
+	 * Méthode qui gère valeurs non valides.
+	 * Ex : tentative de faire un virement négatif.
+	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	private Map<String, String> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
@@ -74,7 +90,10 @@ public class ContollerExceptionHandler {
 		return errors;
 	}
 	
-
+	/**
+	 * Méthode qui gère les exceptions liées à l'association entre un conseiller et un client
+	 * Ex : le client est inconnu
+	 */
 	@ExceptionHandler(AssignAdvisorToClientException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	private Map<String, String> handleAssignAdvisorToClientException(AssignAdvisorToClientException e) {

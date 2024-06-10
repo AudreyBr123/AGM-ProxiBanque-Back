@@ -31,5 +31,4 @@ public class CurrentAccountServiceImpl implements CurrentAccountService {
 		return repository.save(currentAccount);
 	}
 
-	//+ update
 }
