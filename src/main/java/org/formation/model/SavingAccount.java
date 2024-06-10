@@ -35,12 +35,6 @@ public class SavingAccount {
 	 	this.creationDate = LocalDate.now();
 	 }
 
-//	public SavingAccount(@Min(value = 0, message = "Balance cannot be lower than 0") double balance,
-//			LocalDate creationDate) {
-//		this.balance = balance;
-//		this.creationDate = creationDate;
-//	}
-
 	public Long getId() {
 		return id;
 	}
