@@ -13,6 +13,9 @@ import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
 
+/**
+ * Cette classe initialise un jeu de données
+ */
 @Component
 public class ReInitDefaultDataSet {
 	@Autowired

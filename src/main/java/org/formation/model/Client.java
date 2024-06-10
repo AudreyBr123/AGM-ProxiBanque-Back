@@ -1,6 +1,6 @@
 package org.formation.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
@@ -33,7 +33,7 @@ public class Client {
 	
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name="advisor_id")
-	@JsonIgnore
+	@JsonBackReference
 	private Advisor advisor;
 
 	public Client() {

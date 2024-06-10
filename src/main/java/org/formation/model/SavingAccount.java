@@ -2,16 +2,14 @@ package org.formation.model;
 
 import java.time.LocalDate;
 
-import org.formation.service.TransferServiceImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 
 @Entity
@@ -32,7 +30,7 @@ public class SavingAccount {
 		this.creationDate = LocalDate.now();
 	}
 
-	 public SavingAccount(@Min(value = 0, message = "Balance cannot be lower than 0") double balance) {
+	 public SavingAccount(@Valid double balance) {
 	 	this.balance = balance;
 	 	this.creationDate = LocalDate.now();
 	 }
